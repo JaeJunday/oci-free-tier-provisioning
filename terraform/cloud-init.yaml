@@ -15,10 +15,10 @@ packages:
   - unzip
 
 write_files:
-  - path: /etc/profile.d/agent-workspace.sh
+  - path: /etc/profile.d/workspace.sh
     permissions: '0644'
     content: |
-      export AGENT_WORKSPACE=${agent_workspace_path}
+      export WORKSPACE_PATH=${workspace_path}
 
 runcmd:
   - install -m 0755 -d /etc/apt/keyrings
@@ -30,9 +30,9 @@ runcmd:
   - apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
   - systemctl enable --now docker
   - usermod -aG docker ubuntu
-  - mkdir -p ${agent_workspace_path}
-  - chown -R ubuntu:ubuntu ${agent_workspace_path}
-  - chmod 0755 ${agent_workspace_path}
+  - mkdir -p ${workspace_path}
+  - chown -R ubuntu:ubuntu ${workspace_path}
+  - chmod 0755 ${workspace_path}
   - curl -fsSL https://tailscale.com/install.sh | sh || echo "Tailscale install failed; install manually if needed."
   - ufw allow 22/tcp
   - ufw allow 41641/udp
@@ -41,7 +41,7 @@ runcmd:
   - |
     cat > /etc/motd << 'EOF'
     ================================================================================
-    OCI Agent Host
+    OCI Free Tier Host
     ================================================================================
 
     Base tooling:
@@ -51,14 +51,14 @@ runcmd:
     - Tailscale installer
 
     Workspace:
-    - ${agent_workspace_path}
+    - ${workspace_path}
 
     Suggested first steps:
     1. Connect private network if needed:
        sudo tailscale up
 
-    2. Work from the agent workspace:
-       cd ${agent_workspace_path}
+    2. Work from the workspace:
+       cd ${workspace_path}
 
     3. Check runtime tools:
        docker version
@@ -68,4 +68,4 @@ runcmd:
     EOF
 
 final_message: |
-  OCI agent host bootstrap complete.
+  OCI Free Tier host bootstrap complete.

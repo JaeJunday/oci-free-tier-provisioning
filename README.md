@@ -1,6 +1,6 @@
-# OCI Agent Host Provisioning
+# OCI Free Tier Provisioning
 
-Oracle Cloud Infrastructure Free Tier에 개인용 AI 에이전트 실행용 VM을 만드는 최소 Terraform 구성입니다.
+Oracle Cloud Infrastructure Free Tier에 개인용 작업 VM을 만드는 최소 Terraform 구성입니다.
 애플리케이션 배포 파일은 포함하지 않고, VM/네트워크/초기 부팅 설정만 관리합니다.
 
 ## 구성
@@ -9,7 +9,7 @@ Oracle Cloud Infrastructure Free Tier에 개인용 AI 에이전트 실행용 VM�
 - `terraform/variables.tf`: 리전, 컴파트먼트, SSH 키, 인스턴스 크기 변수
 - `terraform/network.tf`: VCN, public subnet, internet gateway, route table, security list
 - `terraform/compute.tf`: Ubuntu ARM64 compute instance
-- `terraform/cloud-init.yaml`: 기본 패키지, Docker, Docker Compose, Tailscale, UFW 설정
+- `terraform/cloud-init.yaml`: 기본 패키지, Docker, Docker Compose, Tailscale, UFW, 작업 디렉터리 설정
 - `terraform/outputs.tf`: public IP, private IP, SSH 명령 출력
 - `terraform/auto-deploy.sh`: OCI Resource Manager apply 재시도 helper
 
@@ -40,7 +40,7 @@ terraform apply
 
 ```bash
 cd terraform
-zip -r agent-host-terraform.zip . \
+zip -r oci-free-tier-provisioning.zip . \
   -x ".terraform/*" \
   -x "*.tfstate*" \
   -x "*.tfvars" \
@@ -60,10 +60,10 @@ STACK_ID=<stack_ocid> ./auto-deploy.sh
 ```bash
 ssh ubuntu@<PUBLIC_IP>
 sudo tailscale up
-cd /opt/agent-workspace
+cd /opt/workspace
 docker version
 docker compose version
 ```
 
 기본 보안 규칙은 SSH `22/tcp`, Tailscale `41641/udp`, ICMP만 인바운드로 엽니다.
-에이전트 애플리케이션 포트는 Terraform에 고정하지 않고, 실제 실행 방식에 맞춰 별도로 열거나 Tailscale 내부에서만 사용합니다.
+애플리케이션 포트는 Terraform에 고정하지 않고, 실제 실행 방식에 맞춰 별도로 열거나 Tailscale 내부에서만 사용합니다.

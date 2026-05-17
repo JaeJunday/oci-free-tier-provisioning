@@ -27,19 +27,19 @@ variable "ssh_public_key" {
 variable "instance_display_name" {
   description = "Display name for the compute instance and related resources"
   type        = string
-  default     = "agent-host"
+  default     = "free-tier-host"
 }
 
 variable "hostname_label" {
   description = "DNS hostname label for the instance VNIC"
   type        = string
-  default     = "agenthost"
+  default     = "freehost"
 }
 
 variable "vcn_dns_label" {
   description = "DNS label for the VCN"
   type        = string
-  default     = "agent"
+  default     = "free"
 }
 
 variable "vcn_cidr_block" {
@@ -129,8 +129,8 @@ variable "ssh_ingress_cidr" {
   }
 }
 
-variable "agent_workspace_path" {
-  description = "Directory created on the instance for agent workloads"
+variable "workspace_path" {
+  description = "Directory created on the instance for user workloads"
   type        = string
-  default     = "/opt/agent-workspace"
+  default     = "/opt/workspace"
 }

@@ -6,8 +6,8 @@ region         = "ap-chuncheon-1"
 ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... your-email@example.com"
 
 # Instance Configuration
-instance_display_name      = "agent-host"
-hostname_label             = "agenthost"
+instance_display_name      = "free-tier-host"
+hostname_label             = "freehost"
 instance_shape             = "VM.Standard.A1.Flex"
 instance_ocpus             = 4
 instance_memory_in_gbs     = 24
@@ -20,4 +20,4 @@ subnet_cidr_block = "10.0.1.0/24"
 ssh_ingress_cidr  = "203.0.113.10/32" # replace with your public IP CIDR
 
 # Instance bootstrap
-agent_workspace_path = "/opt/agent-workspace"
+workspace_path = "/opt/workspace"

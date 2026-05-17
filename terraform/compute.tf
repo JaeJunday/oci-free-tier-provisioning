@@ -41,7 +41,7 @@ resource "oci_core_instance" "agent_host" {
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
     user_data = base64encode(templatefile("${path.module}/cloud-init.yaml", {
-      agent_workspace_path = var.agent_workspace_path
+      workspace_path = var.workspace_path
     }))
   }
 

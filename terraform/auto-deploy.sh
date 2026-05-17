@@ -5,7 +5,7 @@ set -u
 STACK_ID="${STACK_ID:-}"
 MAX_RETRIES="${MAX_RETRIES:-100}"
 RETRY_DELAY="${RETRY_DELAY:-30}"
-DISPLAY_NAME="${DISPLAY_NAME:-Agent Host Deploy}"
+DISPLAY_NAME="${DISPLAY_NAME:-OCI Free Tier Provisioning}"
 
 if [ -z "$STACK_ID" ]; then
   echo "STACK_ID is required."

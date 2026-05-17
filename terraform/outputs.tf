@@ -1,15 +1,15 @@
 output "instance_public_ip" {
-  description = "Public IP address of the agent host"
+  description = "Public IP address of the instance"
   value       = oci_core_instance.agent_host.public_ip
 }
 
 output "instance_private_ip" {
-  description = "Private IP address of the agent host"
+  description = "Private IP address of the instance"
   value       = oci_core_instance.agent_host.private_ip
 }
 
 output "instance_id" {
-  description = "OCID of the agent host instance"
+  description = "OCID of the instance"
   value       = oci_core_instance.agent_host.id
 }
 
