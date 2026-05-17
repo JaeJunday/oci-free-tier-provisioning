@@ -1,0 +1,23 @@
+# OCI Configuration
+compartment_id = "<compartment_ocid>"
+region         = "ap-chuncheon-1"
+
+# SSH Public Key (paste your ~/.ssh/id_rsa.pub or similar)
+ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... your-email@example.com"
+
+# Instance Configuration
+instance_display_name      = "agent-host"
+hostname_label             = "agenthost"
+instance_shape             = "VM.Standard.A1.Flex"
+instance_ocpus             = 4
+instance_memory_in_gbs     = 24
+boot_volume_size_in_gbs    = 100
+availability_domain_index  = 0
+
+# Network Configuration
+vcn_cidr_block    = "10.0.0.0/16"
+subnet_cidr_block = "10.0.1.0/24"
+ssh_ingress_cidr  = "203.0.113.10/32" # replace with your public IP CIDR
+
+# Instance bootstrap
+agent_workspace_path = "/opt/agent-workspace"

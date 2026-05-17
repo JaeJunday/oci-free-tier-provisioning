@@ -1,0 +1,71 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - ca-certificates
+  - curl
+  - git
+  - gnupg
+  - htop
+  - jq
+  - tmux
+  - ufw
+  - unzip
+
+write_files:
+  - path: /etc/profile.d/agent-workspace.sh
+    permissions: '0644'
+    content: |
+      export AGENT_WORKSPACE=${agent_workspace_path}
+
+runcmd:
+  - install -m 0755 -d /etc/apt/keyrings
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  - chmod a+r /etc/apt/keyrings/docker.asc
+  - |
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" > /etc/apt/sources.list.d/docker.list
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  - systemctl enable --now docker
+  - usermod -aG docker ubuntu
+  - mkdir -p ${agent_workspace_path}
+  - chown -R ubuntu:ubuntu ${agent_workspace_path}
+  - chmod 0755 ${agent_workspace_path}
+  - curl -fsSL https://tailscale.com/install.sh | sh || echo "Tailscale install failed; install manually if needed."
+  - ufw allow 22/tcp
+  - ufw allow 41641/udp
+  - ufw --force enable
+  - ufw reload
+  - |
+    cat > /etc/motd << 'EOF'
+    ================================================================================
+    OCI Agent Host
+    ================================================================================
+
+    Base tooling:
+    - Docker Engine and Docker Compose plugin
+    - Git, curl, jq, tmux, htop, unzip
+    - UFW firewall
+    - Tailscale installer
+
+    Workspace:
+    - ${agent_workspace_path}
+
+    Suggested first steps:
+    1. Connect private network if needed:
+       sudo tailscale up
+
+    2. Work from the agent workspace:
+       cd ${agent_workspace_path}
+
+    3. Check runtime tools:
+       docker version
+       docker compose version
+
+    ================================================================================
+    EOF
+
+final_message: |
+  OCI agent host bootstrap complete.

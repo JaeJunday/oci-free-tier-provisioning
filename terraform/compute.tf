@@ -1,0 +1,56 @@
+# Get the latest Ubuntu 22.04 image compatible with the selected shape.
+data "oci_core_images" "ubuntu_arm_images" {
+  compartment_id           = var.compartment_id
+  operating_system         = "Canonical Ubuntu"
+  operating_system_version = "22.04"
+  shape                    = var.instance_shape
+  sort_by                  = "TIMECREATED"
+  sort_order               = "DESC"
+}
+
+# Get availability domain
+data "oci_identity_availability_domains" "ads" {
+  compartment_id = var.compartment_id
+}
+
+# Compute Instance (Ampere A1 - Always Free default)
+resource "oci_core_instance" "agent_host" {
+  compartment_id      = var.compartment_id
+  availability_domain = data.oci_identity_availability_domains.ads.availability_domains[var.availability_domain_index].name
+  display_name        = var.instance_display_name
+  shape               = var.instance_shape
+
+  shape_config {
+    ocpus         = var.instance_ocpus
+    memory_in_gbs = var.instance_memory_in_gbs
+  }
+
+  source_details {
+    source_type             = "image"
+    source_id               = data.oci_core_images.ubuntu_arm_images.images[0].id
+    boot_volume_size_in_gbs = var.boot_volume_size_in_gbs
+  }
+
+  create_vnic_details {
+    subnet_id        = oci_core_subnet.agent_subnet.id
+    display_name     = "${var.instance_display_name}-vnic"
+    assign_public_ip = true
+    hostname_label   = var.hostname_label
+  }
+
+  metadata = {
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = base64encode(templatefile("${path.module}/cloud-init.yaml", {
+      agent_workspace_path = var.agent_workspace_path
+    }))
+  }
+
+  # Always Free eligible
+  is_pv_encryption_in_transit_enabled = true
+
+  lifecycle {
+    ignore_changes = [
+      source_details[0].source_id
+    ]
+  }
+}
