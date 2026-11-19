@@ -1,6 +1,7 @@
 # OCI Configuration
 compartment_id = "<compartment_ocid>"
 region         = "ap-chuncheon-1"
+oci_profile    = "DEFAULT" # profile name in ~/.oci/config
 
 # SSH Public Key (paste your ~/.ssh/id_rsa.pub or similar)
 ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... your-email@example.com"
@@ -9,8 +10,8 @@ ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... your-email@example.com
 instance_display_name      = "free-tier-host"
 hostname_label             = "freehost"
 instance_shape             = "VM.Standard.A1.Flex"
-instance_ocpus             = 4
-instance_memory_in_gbs     = 24
+instance_ocpus             = 2
+instance_memory_in_gbs     = 12
 boot_volume_size_in_gbs    = 100
 availability_domain_index  = 0
 

@@ -4,6 +4,12 @@ variable "region" {
   default     = "ap-chuncheon-1"
 }
 
+variable "oci_profile" {
+  description = "Profile name in ~/.oci/config used for local runs"
+  type        = string
+  default     = "DEFAULT"
+}
+
 variable "compartment_id" {
   description = "OCI compartment OCID where resources will be created"
   type        = string
@@ -76,24 +82,24 @@ variable "instance_shape" {
 }
 
 variable "instance_ocpus" {
-  description = "Number of OCPUs (Always Free max: 4)"
+  description = "Number of OCPUs (Always Free max: 2)"
   type        = number
-  default     = 4
+  default     = 2
 
   validation {
-    condition     = var.instance_ocpus > 0 && var.instance_ocpus <= 4
-    error_message = "instance_ocpus must be greater than 0 and no more than the Always Free A1 total of 4 OCPUs."
+    condition     = var.instance_ocpus > 0 && var.instance_ocpus <= 2
+    error_message = "instance_ocpus must be greater than 0 and no more than the Always Free A1 total of 2 OCPUs."
   }
 }
 
 variable "instance_memory_in_gbs" {
-  description = "Memory in GBs (Always Free max: 24)"
+  description = "Memory in GBs (Always Free max: 12)"
   type        = number
-  default     = 24
+  default     = 12
 
   validation {
-    condition     = var.instance_memory_in_gbs > 0 && var.instance_memory_in_gbs <= 24
-    error_message = "instance_memory_in_gbs must be greater than 0 and no more than the Always Free A1 total of 24 GB."
+    condition     = var.instance_memory_in_gbs > 0 && var.instance_memory_in_gbs <= 12
+    error_message = "instance_memory_in_gbs must be greater than 0 and no more than the Always Free A1 total of 12 GB."
   }
 }
 

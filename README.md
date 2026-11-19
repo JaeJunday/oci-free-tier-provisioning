@@ -16,7 +16,8 @@ Oracle Cloud Infrastructure Free Tier에 개인용 작업 VM을 만드는 최소
 ## Free Tier 기본값
 
 기본값은 OCI Ampere A1 Always Free 범위에 맞춰 둡니다.
-Oracle 공식 문서 기준 Always Free 테넌시의 Ampere A1 한도는 총 4 OCPU / 24 GB 메모리이고, boot volume과 block volume 합산 200 GB가 Always Free 범위입니다.
+Oracle 공식 문서 기준 Ampere A1은 월 1,500 OCPU 시간·9,000 GB 시간까지 무료이고, 상시 실행 기준으로 총 2 OCPU / 12 GB 메모리입니다(이전 기준 4 OCPU / 24 GB에서 축소).
+boot volume과 block volume 합산 200 GB가 Always Free 범위입니다.
 
 참고: [Oracle Always Free Resources](https://docs.oracle.com/iaas/Content/FreeTier/resourceref.htm)
 
@@ -34,7 +35,7 @@ terraform apply
 
 `terraform.tfvars`, `*.tfstate`, `tfplan*` 파일에는 개인 OCI 식별자나 실행 상태가 들어갈 수 있으므로 커밋하지 마세요.
 이 저장소의 `.gitignore`는 해당 파일들을 제외하도록 구성되어 있습니다.
-`region`은 본인 OCI home region으로, `ssh_ingress_cidr`는 가능하면 본인 공인 IP의 `/32` CIDR로 바꿔서 사용하세요.
+`region`은 본인 OCI home region으로, `oci_profile`은 `~/.oci/config`의 프로필 이름으로, `ssh_ingress_cidr`는 가능하면 본인 공인 IP의 `/32` CIDR로 바꿔서 사용하세요.
 
 ## OCI Resource Manager 실행
 
