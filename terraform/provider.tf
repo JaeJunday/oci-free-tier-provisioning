@@ -9,5 +9,6 @@ terraform {
 }
 
 provider "oci" {
-  region = var.region
+  region              = var.region
+  config_file_profile = var.oci_profile
 }
